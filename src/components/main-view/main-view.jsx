@@ -1,15 +1,5 @@
-<<<<<<< Updated upstream
-import { useEffect, useState } from "react";
-import { MovieCard } from "../movie-card";
-import { MovieView } from "../movie-view";
-
-export const MainView = () => {
-    const [movies, setMovies] = useState([]);
-
-    const [selectedMovie, setSelectedMovie] = useState(null);
-=======
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { MovieCard } from "../movie-card/movie-card";
+import { MovieCard } from "../movie-card/movie-card"
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
@@ -24,20 +14,15 @@ export const MainView = () => {
     const [ movies, setMovies ] = useState([]);
     const [ user, setUser ] = useState(storedUser? storedUser : null);
     const [ token, setToken ] = useState(storedToken? storedToken : null);
->>>>>>> Stashed changes
 
 
     useEffect(() => {
-<<<<<<< Updated upstream
-        fetch('https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/movies')
-=======
         if (!token) {
             return;
         }
         fetch('https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/movies', {
             headers: { Authorization: `Bearer ${token}`}
         })
->>>>>>> Stashed changes
             .then((response) => response.json())
             .then((data) => {
                 const moviesFromApi = data.map((movie) => {
@@ -63,33 +48,6 @@ export const MainView = () => {
             })
     })
 
-<<<<<<< Updated upstream
-    if (selectedMovie) {
-        return (
-            <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
-        );
-    }
-    if (movies.length === 0) {
-        return <div>The List is empty!</div>;
-    } else {
-        return (
-            <div>
-                {movies.map((movie) => {
-                    return (
-                        <MovieCard
-                            key={movie.id}
-                            movie={movie}
-                            onMovieClick={(newSelectedMovie) => {
-                                setSelectedMovie(newSelectedMovie);
-                            }}
-                        />
-                    );
-                })}
-            </div>
-        );
-    }
-};
-=======
     
     
     /* const onLoggedIn = (user, token) => {
@@ -213,4 +171,3 @@ export const MainView = () => {
         </BrowserRouter>
       );
     };
->>>>>>> Stashed changes
