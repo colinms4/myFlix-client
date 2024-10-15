@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { MovieCard } from "../movie-card/movie-card"
 import { MovieView } from "../movie-view/movie-view";
@@ -28,7 +29,7 @@ export const MainView = () => {
                 const moviesFromApi = data.map((movie) => {
                     return {
                         id: movie._id,
-                        title: movie.Title,
+                        Title: movie.Title,
                         Director: {
                             Name: movie.Director.Name,
                             Bio: movie.Director.Bio,

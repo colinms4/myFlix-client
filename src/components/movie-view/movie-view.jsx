@@ -3,8 +3,8 @@ import { Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 
 export const MovieView = ({ movies, user, token, userFavMovies }) => {
-    const [favMovies, setFavMovies] = useState([]);
-    const { FavoriteMovies } = useParams();
+   // const [favMovies, setFavMovies] = useState([]);
+   // const { FavoriteMovies } = useParams();
     const { movieId } = useParams();
     const movie = movies.find((m) => m._id === movieId);
     // const favMovie = users.find((u) => u.FavoriteMovies === FavoriteMovies)
@@ -61,7 +61,7 @@ export const MovieView = ({ movies, user, token, userFavMovies }) => {
       </div>
       <div>
         <span>Title: </span>
-        <span>{movie.title}</span>
+        <span>{movie.Title}</span>
       </div>
       <div>
         <span>Description: </span>

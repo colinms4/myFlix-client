@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
@@ -8,7 +9,7 @@ export const MovieCard = ({ movie }) => {
         <Card style={{ width: '18rem'}} className="h-100">
           <Card.Img variant="top" src={movie.ImagePath}></Card.Img>
             <Card.Body>
-                <Card.Title>{movie.title}</Card.Title>
+                <Card.Title>{movie.Title}</Card.Title>
                 <Card.Text>{movie.Director.Name}</Card.Text>
                 <Link to={`/movies/${encodeURIComponent(movie._id)}`}>
                 <Button variant="dark">Open</Button>
