@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 
-export const MovieView = ({ movies, user, token, userFavMovies }) => {
-   // const [favMovies, setFavMovies] = useState([]);
-   // const { FavoriteMovies } = useParams();
-    const { movieId } = useParams();
-    const movie = movies.find((m) => m._id === movieId);
-    // const favMovie = users.find((u) => u.FavoriteMovies === FavoriteMovies)
-   
-  
+export const MovieView = ({ movies, user, token, setUser }) => {
+  const [favMovies, setFavMovies] = useState(user.FavoriteMovies || []);
+  const { movieId } = useParams();
+  console.log("Movie ID:", movieId);
+  const movie = movies.find((list) => list.id === movieId);
+
+
+  if (!movie) {
+    return <div>Loading movie details...</div>; // You can customize this message or add a spinner
+  }
+
   const addFavMovie = () => {
-    fetch(`https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/users/${user.Username}/movies/${movie._id}`, {
+    fetch(`https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/users/${user.Username}/movies/${movie.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +30,8 @@ export const MovieView = ({ movies, user, token, userFavMovies }) => {
       .then(updatedUser => {
         setUser(updatedUser); // Update user in global state
         localStorage.setItem('user', JSON.stringify(updatedUser)); // Update localStorage
-        setFavMovie(userFavMovies); // Update UI
+        setFavMovies(updatedUser.FavoriteMovies);
+        alert("Movie sucessfully added to favorites");
       })
       .catch(error => console.error('Error:', error));
   };
@@ -49,7 +53,8 @@ export const MovieView = ({ movies, user, token, userFavMovies }) => {
       .then(updatedUser => {
         setUser(updatedUser); // Update user in global state
         localStorage.setItem('user', JSON.stringify(updatedUser)); // Update localStorage
-        setFavMovies(false); // Update UI
+        setFavMovies(updatedUser.FavoriteMovies); // Update UI with updated list of favorite movies
+        alert("Movie sucessfully deleted from favorites");
       })
       .catch(error => console.error('Error:', error));
   };
@@ -57,7 +62,7 @@ export const MovieView = ({ movies, user, token, userFavMovies }) => {
   return (
     <div>
       <div>
-        
+        <img src={movie.ImagePath} alt={movie.Title} />
       </div>
       <div>
         <span>Title: </span>
@@ -82,8 +87,8 @@ export const MovieView = ({ movies, user, token, userFavMovies }) => {
       <Link to={`/`}>
         <Button variant="dark">Back</Button>
       </Link>
-        <Button variant="danger">Remove from Favorites</Button>
-        <Button variant="primary" onClick={userFavMovies}>Add to Favorites</Button>
+      <Button variant="danger" onClick={removeFavMovie}>Remove from Favorites</Button>
+      <Button variant="primary" onClick={addFavMovie}>Add to Favorites</Button>
     </div>
   );
 };

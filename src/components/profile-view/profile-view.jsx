@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Col, Row, Container } from 'react-bootstrap';
 import { UserInfo } from "../profile-view/user-info";
 
-export const ProfileView = ({ user, setUser }) => {
+export const ProfileView = ({ user, setUser, token, onLoggedOut }) => {
   // State to hold the editable user data
   const [formData, setFormData] = useState({
     username: user.Username || '',
@@ -11,7 +11,7 @@ export const ProfileView = ({ user, setUser }) => {
     password: '',
     favoriteMovies: user.FavoriteMovies || []
   });
-  const [ users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   // Handle form inputs
   const handleChange = (e) => {
@@ -31,39 +31,57 @@ export const ProfileView = ({ user, setUser }) => {
       Email: formData.email,
       Birthday: formData.birthday
     };
-    
+
     // Simulate API call to update user details
     localStorage.setItem('user', JSON.stringify(updatedUser));
     setUser(updatedUser); // Update the main app state with new user data
     alert('Profile updated!');
   };
 
+  const ProfileDelete = () => {
+    fetch(`https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/users/${user.Username}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+    }).then((response) => {
+      if (response.ok) {
+        alert("Account Deleted Successfully");
+        onLoggedOut(); e
+      } else {
+        alert("Failed to Unregister Account");
+      }
+    }).catch((error) => console.error("Error:", error)); k
+  };
+
+
   useEffect(() => {
     if (user) {
       fetch('https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/users', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       }).then((response) => response.json())
-      .then((data) => {
-        const usersFromApi = data.map((user) => {
-          return {
-            Username: user.Username,
-            Password: user.Password,
-            Email: user.Email,
-            Birthday: user.Birthday,
-            FavoriteMovies: user.FavoriteMovies || [],
-            Id: user._id
-          }
+        .then((data) => {
+          const usersFromApi = data.map((user) => {
+            return {
+              Username: user.Username,
+              Password: user.Password,
+              Email: user.Email,
+              Birthday: user.Birthday,
+              FavoriteMovies: user.FavoriteMovies || [],
+              Id: user._id
+            }
+          })
+          setUsers(usersFromApi);
+          console.log(usersFromApi);
         })
-        setUsers(usersFromApi);
-        console.log(usersFromApi);
-      })
     }
-  },[]);
+  }, []);
 
   return (
     <Container>
       <h2 className='mt-5'>User Information</h2>
-        <UserInfo user={user.Username} email={user.Email}/>
+      <UserInfo user={user} />
       <h2 className="mt-5">Update Profile</h2>
       <Form onSubmit={handleSubmit}>
         <Row>
@@ -123,14 +141,19 @@ export const ProfileView = ({ user, setUser }) => {
         </Button>
         <Row>
           <Col>
-        <h4>Favorite Movies</h4>
-        <ul>
-          {formData.favoriteMovies.length > 0 ? (
-            formData.favoriteMovies.map((movie, index) => <li key={index}>{movie}</li>)
-          ) : (
-            <p>No favorite movies added.</p>
-          )}
-        </ul>
+            <h4>Favorite Movies</h4>
+            <ul>
+              {formData.favoriteMovies.length > 0 ? (
+                formData.favoriteMovies.map((movie, index) => <li key={index}>{movie}</li>)
+              ) : (
+                <p>No favorite movies added.</p>
+              )}
+            </ul>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button variant='danger' type='submit' onClick={ProfileDelete}>Delete Profile</Button>
           </Col>
         </Row>
       </Form>
