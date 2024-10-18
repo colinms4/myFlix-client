@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import Image from "react-bootstrap/Image";
 
 export const MovieView = ({ movies, user, token, setUser }) => {
   const [favMovies, setFavMovies] = useState(user.FavoriteMovies || []);
@@ -61,34 +62,34 @@ export const MovieView = ({ movies, user, token, setUser }) => {
 
   return (
     <div>
-      <div>
-        <img src={movie.ImagePath} alt={movie.Title} />
+      <div style={{ width: "28rem" }} className='h-100'>
+        <Image src={movie.ImagePath} fluid alt={movie.Title} />
       </div>
       <div>
-        <span>Title: </span>
-        <span>{movie.Title}</span>
+        <span><strong>Title:</strong></span>
+        <span> {movie.Title}</span>
       </div>
       <div>
-        <span>Description: </span>
-        <span>{movie.Description}</span>
+        <span><strong>Description:</strong></span>
+        <span> {movie.Description}</span>
       </div>
       <div>
-        <span>Genre: </span>
-        <span>{movie.Genre.Name}</span>
+        <span><strong>Genre:</strong></span>
+        <span> {movie.Genre.Name}</span>
       </div>
       <div>
-        <span>Director: </span>
-        <span>{movie.Director.Name}</span>
+        <span><strong>Director:</strong></span>
+        <span> {movie.Director.Name}</span>
       </div>
       <div>
-        <span>Bio: </span>
-        <span>{movie.Director.Bio}</span>
+        <span><strong>Bio:</strong> </span>
+        <span> {movie.Director.Bio}</span>
       </div>
       <Link to={`/`}>
         <Button variant="dark">Back</Button>
       </Link>
-      <Button variant="danger" onClick={removeFavMovie}>Remove from Favorites</Button>
       <Button variant="primary" onClick={addFavMovie}>Add to Favorites</Button>
+      <Button variant="danger" onClick={removeFavMovie}>Remove from Favorites</Button>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { ProfileView } from "../profile-view/profile-view";
 import { Button, Col, Row } from "react-bootstrap";
 import { NavigationBar } from "../nav-bar/nav-bar";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { MovieSearch } from "../movie-search.jsx/movie-search";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -15,7 +16,7 @@ export const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
-
+  const [filteredMovies, setFilterdMovies] = useState([]);
 
   useEffect(() => {
     if (!token) {
@@ -41,12 +42,13 @@ export const MainView = () => {
               Description: movie.Genre.Description
             },
             Description: movie.Description,
-            ImagePath: `https://myflixdb-movies123-5a87d32f5f6f.herokuapp.com/${movie.ImagePath}`,
+            ImagePath: movie.ImagePath,
             Featured: movie.Featured
           }
         })
         console.log("Movies fetched from API:", moviesFromApi); // Log the movies array
         setMovies(moviesFromApi);
+        setFilterdMovies(moviesFromApi);
       })
   }, [token]);
 
@@ -59,30 +61,6 @@ export const MainView = () => {
     window.location.reload();
   }
 
-  /* const onLoggedIn = (user, token) => {
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", token);
-    setUser(user);
-    setToken(token);
-  };
-  
-  const onLoggedOut = () => {
-    localStorage.clear();
-    setUser(null);
-    setToken(null);
-    window.location.reload();
-  }
-
-  const updatedUserInfo = (user) => {
-    setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
-  }
-  
-  const handleUpdate = (user) => {
-    setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
-  };
-*/
   return (
     <BrowserRouter>
       <NavigationBar user={user} onLoggedOut={(e) => {
@@ -154,7 +132,8 @@ export const MainView = () => {
                   <Col>The list is empty!</Col>
                 ) : (
                   <>
-                    {movies.map((movie) => (
+                    <MovieSearch movies={movies} setFilterdMovies={setFilterdMovies} />
+                    {filteredMovies.map((movie) => (
                       <Col className="mb-4" key={movie.id} md={3}>
                         <MovieCard movie={movie} />
                       </Col>

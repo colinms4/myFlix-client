@@ -12,19 +12,18 @@ export const NavigationBar = ({ user, onLoggedOut }) => {
                     <Nav className="me-auto">
                         {!user && (
                             <>
-                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                            <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                                <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
                             </>
                         )}
                         {user && (
                             <>
-                            <Nav.Link as={Link} to="/">Home</Nav.Link>
-                            <Nav.Link onClick={onLoggedOut}>Logout</Nav.Link>
+                                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                                <Nav.Link onClick={onLoggedOut}>Logout</Nav.Link>
                             </>
                         )}
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
                             <NavDropdown.Item onClick={onLoggedOut}>Logout</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
