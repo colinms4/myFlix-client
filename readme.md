@@ -10,11 +10,13 @@ MyFlix is an application where user's can browse movies, get additional informat
 
 # Tech Stack 
 
-> React 
-> React-Bootstrap
-> React Router
-> Parcel
-> Node.js
-> JavaScript ES7
+- React 
+* React-Bootstrap
++ React Router
+- Parcel
+* Node.js
++ JavaScript ES7
 
 # Check out the site!
+
+- https://colinsmyflix.netlify.app/
